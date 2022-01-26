@@ -1,0 +1,49 @@
+package config
+
+import (
+    "github.com/BurntSushi/toml"
+)
+
+type Configuration struct {
+    Webdav WebdavConfig `toml:"webdav"`
+
+    validConfigConditions []validCondition
+    parseMetadata *toml.Metadata
+}
+
+func (c *Configuration) Parse(data []byte) (errors []error) {
+    var err error
+    c.parseMetadata, err = toml.Decode(string(data), a)
+
+    if err != nil {
+        errors = append(errors, err)
+        return
+    }
+
+    errors = a.checkConditions()
+    return
+}
+
+func (c *Configuration) checkConditions() []error {
+    resultErrors := make([]error, 0, len(c.validConfigConditions))
+
+    for _, condition := range c.validConfigConditions {
+        if err := condition.Check(&c.parseMetadata, c); err != nil {
+            resultErrors = append(resultErrors, err)
+        }
+    }
+
+    return resultErrors
+}
+
+type WebdavConfig struct {
+    WebdavHost  string `toml:"webdab_host"`
+    UseAuth     bool `toml:"use_auth"`
+
+    WebdavAuthConfiguration *WebdavAuthetication `toml:"auth"`
+}
+
+type WebdavAuthetication struct {
+    Username string `toml:"username"`
+    Password string `toml:"password"`
+}
