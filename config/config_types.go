@@ -5,9 +5,11 @@ import (
 )
 
 type Configuration struct {
-    Webdav      WebdavConfig `toml:"webdav"`
-    LogFile     string `toml:"log_file"`
-    WorldPath   string `toml:"world_path"`
+    Webdav              WebdavConfig `toml:"webdav"`
+    LogFile             string `toml:"log_file"`
+    WorldPath           string `toml:"world_path"`
+    ArchiveNameTemplate string `toml:"archive_name_template"`
+    TimeTemplate        string `toml:"time_template"`
 
     validConfigConditions []validCondition
     parseMetadata toml.MetaData
@@ -39,8 +41,9 @@ func (c *Configuration) checkConditions() []error {
 }
 
 type WebdavConfig struct {
-    WebdavHost  string `toml:"webdab_host"`
-    UseAuth     bool `toml:"use_auth"`
+    WebdavHost      string  `toml:"webdab_host"`
+    WebdavSavePath  string  `toml:"webdav_save_path"`
+    UseAuth         bool    `toml:"use_auth"`
 
     WebdavAuthConfiguration *WebdavAuthetication `toml:"auth"`
 }
