@@ -3,16 +3,22 @@ package config
 import (
     "fmt"
     "os"
+    "io"
     "github.com/BurntSushi/toml"
 )
 
 func ReadConfiguration(filepath string) (*Configuration, error) {
-    cfg := getDefaultConfiguration()
+    cfg := GetDefaultConfiguration()
     cfg.validConfigConditions = []validCondition{
         validConditionFunc(authCondition),
     }
 
-    fileData, err := os.Open(filepath)
+    file, err := os.Open(filepath)
+    if err != nil {
+        return nil, err
+    }
+
+    fileData, err := io.ReadAll(file)
     if err != nil {
         return nil, err
     }
@@ -29,9 +35,9 @@ func ReadConfiguration(filepath string) (*Configuration, error) {
     return cfg, nil
 }
 
-func getDefaultConfiguration() *Configuration {
+func GetDefaultConfiguration() *Configuration {
     return &Configuration{
-        Webdav: {
+        Webdav: WebdavConfig{
             WebdavHost: "http://localhost",
             UseAuth: false,
         },
@@ -39,6 +45,6 @@ func getDefaultConfiguration() *Configuration {
 }
 
 // Condition functions
-func authCondition(md *toml.Metadata, conf *Configuration) error {
+func authCondition(md *toml.MetaData, conf *Configuration) error {
     return nil
 }

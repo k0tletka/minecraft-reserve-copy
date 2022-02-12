@@ -5,22 +5,24 @@ import (
 )
 
 type Configuration struct {
-    Webdav WebdavConfig `toml:"webdav"`
+    Webdav      WebdavConfig `toml:"webdav"`
+    LogFile     string `toml:"log_file"`
+    WorldPath   string `toml:"world_path"`
 
     validConfigConditions []validCondition
-    parseMetadata *toml.Metadata
+    parseMetadata toml.MetaData
 }
 
 func (c *Configuration) Parse(data []byte) (errors []error) {
     var err error
-    c.parseMetadata, err = toml.Decode(string(data), a)
+    c.parseMetadata, err = toml.Decode(string(data), c)
 
     if err != nil {
         errors = append(errors, err)
         return
     }
 
-    errors = a.checkConditions()
+    errors = c.checkConditions()
     return
 }
 

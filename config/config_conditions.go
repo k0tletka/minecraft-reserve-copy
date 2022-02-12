@@ -24,8 +24,8 @@ func (dm validConditionDefinedMetadata) Check(metadata *toml.MetaData, conf *Con
 }
 
 // Condition type that wraps arbitrary function
-type validConditionFunc func(*toml.MetaData, *ApplicationConfig) error
+type validConditionFunc func(*toml.MetaData, *Configuration) error
 
-func (f validConditionFunc) Check(m *toml.MetaData, c *ApplicationConfig) error {
+func (f validConditionFunc) Check(m *toml.MetaData, c *Configuration) error {
     return f(m, c)
 }
