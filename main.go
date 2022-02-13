@@ -129,7 +129,7 @@ func main() {
     defer zipStdout.Close()
 
     // Upload file
-    if err = davClient.WriteStream(filepath.Join(conf.WorldPath, archiveName), zipStdout, 0); err != nil {
+    if err = davClient.WriteStream(filepath.Join(conf.Webdav.WebdavSavePath, archiveName), zipStdout, 0); err != nil {
         fmt.Fprintf(logFd, "Error: can't send archive to server: %s\n", err)
         os.Exit(WebdavError)
     }

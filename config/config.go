@@ -37,8 +37,12 @@ func ReadConfiguration(filepath string) (*Configuration, error) {
 
 func GetDefaultConfiguration() *Configuration {
     return &Configuration{
+        WorldPath: "world",
+        ArchiveNameTemplate: "{{.WorldSaveName}}-{{.Datetime}}",
+        TimeTemplate: "01-02-03-04-05PM",
         Webdav: WebdavConfig{
             WebdavHost: "http://localhost",
+            WebdavSavePath: "backup/",
             UseAuth: false,
         },
     }
