@@ -41,7 +41,7 @@ func (c *Configuration) checkConditions() []error {
 }
 
 type WebdavConfig struct {
-    WebdavHost      string  `toml:"webdab_host"`
+    WebdavHost      string  `toml:"webdav_host"`
     WebdavSavePath  string  `toml:"webdav_save_path"`
     UseAuth         bool    `toml:"use_auth"`
 
