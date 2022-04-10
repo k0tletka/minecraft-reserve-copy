@@ -1,4 +1,4 @@
-module minecraft-reverse-copy
+module github.com/k0tletka/minecraft-reserve-copy
 
 go 1.17
 
