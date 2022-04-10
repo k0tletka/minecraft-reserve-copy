@@ -38,7 +38,7 @@ func main() {
         ctx         context.Context
         logFd       io.WriteCloser
         davClient   *gowebdav.Client
-        zipStdout   io.ReadCloser
+        zipFile     *os.File
         archiveName string
         err         error
     )
@@ -115,14 +115,18 @@ func main() {
         WorldPath: conf.WorldPath,
     }
 
-    if zipStdout, err = zipProcess.RunZip(ctx); err != nil {
+    if zipFile, err = zipProcess.RunZip(ctx); err != nil {
         fmt.Fprintf(logFd, "Error: can't start zip process: %s\n", err)
         os.Exit(ZipError)
     }
-    defer zipStdout.Close()
+
+    defer func() {
+        zipFile.Close()
+        os.Remove("/tmp/" + zipFile.Name())
+    }()
 
     // Upload file
-    if err = davClient.WriteStream(filepath.Join(conf.Webdav.WebdavSavePath, archiveName), zipStdout, 0); err != nil {
+    if err = davClient.WriteStream(filepath.Join(conf.Webdav.WebdavSavePath, archiveName), zipFile, 0); err != nil {
         fmt.Fprintf(logFd, "Error: can't send archive to server: %s\n", err)
         os.Exit(WebdavError)
     }

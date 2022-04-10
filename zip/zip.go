@@ -2,8 +2,8 @@ package zip
 
 import (
     "context"
+    "os"
     "os/exec"
-    "io"
 )
 
 type ZipProcess struct {
@@ -12,7 +12,7 @@ type ZipProcess struct {
     cmdZipProcess *exec.Cmd
 }
 
-func (z *ZipProcess) RunZip(ctx context.Context) (io.ReadCloser, error) {
+func (z *ZipProcess) RunZip(ctx context.Context) (*os.File, error) {
     // Create zip process
     z.cmdZipProcess = exec.CommandContext(
         ctx,
@@ -22,11 +22,12 @@ func (z *ZipProcess) RunZip(ctx context.Context) (io.ReadCloser, error) {
         z.WorldPath,
     )
 
-    // Get stdout pipe reader and start process
-    stdoutReader, err := z.cmdZipProcess.StdoutPipe()
+    // Create temporary file for archive storing
+    archiveTemp, err := os.CreateTemp("/tmp", "*.zip")
     if err != nil {
         return nil, err
     }
 
-    return stdoutReader, z.cmdZipProcess.Start()
+    z.cmdZipProcess.Stdout = archiveTemp
+    return archiveTemp, z.cmdZipProcess.Run()
 }
