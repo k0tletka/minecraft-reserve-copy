@@ -4,7 +4,7 @@ import (
     "text/template"
     "bytes"
 
-    "minecraft-reverse-copy/common/types"
+    "github.com/k0tletka/minecraft-reserve-copy/common/types"
 )
 
 func GenerateArchiveName(archiveNameTemplate string, templateData *types.ArchiveTemplateData) (string, error) {

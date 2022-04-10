@@ -11,10 +11,10 @@ import (
     "io"
     "time"
 
-    "minecraft-reverse-copy/config"
-    "minecraft-reverse-copy/zip"
-    "minecraft-reverse-copy/tmpl"
-    "minecraft-reverse-copy/common/types"
+    "github.com/k0tletka/minecraft-reserve-copy/config"
+    "github.com/k0tletka/minecraft-reserve-copy/zip"
+    "github.com/k0tletka/minecraft-reserve-copy/tmpl"
+    "github.com/k0tletka/minecraft-reserve-copy/common/types"
 
     "github.com/k0tletka/gowebdav"
 )
