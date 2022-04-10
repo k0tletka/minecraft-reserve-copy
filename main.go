@@ -84,14 +84,13 @@ func main() {
     }()
 
     // Initialize webdav connection
-    switch conf.Webdav.UseAuth {
-    case true:
+    if conf.Webdav.UseAuth {
         davClient = gowebdav.NewClientBasicAuth(
             conf.Webdav.WebdavHost,
             conf.Webdav.WebdavAuthConfiguration.Username,
             conf.Webdav.WebdavAuthConfiguration.Password,
         )
-    case false:
+    } else {
         davClient = gowebdav.NewClient(conf.Webdav.WebdavHost, "", "")
     }
 
