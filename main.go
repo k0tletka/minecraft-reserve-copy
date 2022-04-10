@@ -99,12 +99,6 @@ func main() {
         os.Exit(WebdavError)
     }
 
-    // Create directory for reserve copy if not exists
-    if err = davClient.MkdirAll(conf.Webdav.WebdavSavePath, 0); err != nil {
-        fmt.Fprintf(logFd, "Error: can't create folder for reserve copy: %s\n", err)
-        os.Exit(WebdavError)
-    }
-
     // Generate archive name
     archiveTemplateData := &types.ArchiveTemplateData{
         Datetime: time.Now().Format(conf.TimeTemplate),
